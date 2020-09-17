@@ -1,0 +1,39 @@
+---
+- hosts: ec2
+
+  tasks:
+   - name: Install the package "lxml"
+     become: yes
+     apt:
+        name: python-lxml
+
+# Jira block
+   - name: check if jira exist on this server
+     stat:
+             path: /atlassian/jira
+     register: jira_found
+
+   - name: find Jira proxyName
+     xml:
+             path: /atlassian/jira/application/current/conf/server.xml
+             content:  attribute
+             #xpath: string(/Server/Service[@name="Catalina"]/Connector/@proxyName)
+             xpath: /Server/Service[@name="Catalina"]/Connector
+     register: jiraProxyName
+     # use jiraProxyName.matches[0].Connector["proxyName"]
+     when: jira_found.stat.exists
+
+   - name: find Jira context path
+     xml:
+             path: /atlassian/jira/application/current/conf/server.xml
+             content:  attribute
+             #xpath: string(/Server/Service/Engine/Host/Context/@path)
+             xpath: /Server/Service/Engine/Host/Context
+     register: jiraContext
+     #use : jiraContext.matches[0].Context["path"]
+     when: jira_found.stat.exists
+
+   - name: Show Jira URL var value
+     debug:
+             var: jiraContext
+             #var: jiraProxyName.matches[0].Connector["proxyName"]
