@@ -1,0 +1,21 @@
+## Before the j2 test on confluence_found.stat.exists variable :
+{% if confluence_found.stat.exists is defined %}
+confluence_found.stat.exists = {{ confluence_found.stat.exists }}
+{% else %}
+NB: confluence_found.stat.exists not defined for j2 template
+{% endif %}
+##  After the j2 test on confluence_found.stat.exists var.
+## Before the j2 test on jira_found.stat.exists variable :
+{% if jira_found.stat.exists is defined %}
+jira_found.stat.exists = {{ jira_found.stat.exists }}
+{% else %}
+NB : jira_found.stat.exists not defined for j2 template
+{% endif %}
+##  After the j2 test on jira_found.stat.exists var.
+## Before the j2 test on jiraProxyName variable :
+{% if jiraProxyName is defined %}
+jiraProxyName = {{ jiraProxyName.matches[0].Connector["proxyName"] }}
+{% else %}
+NB : jiraProxyName not defined for j2 template
+{% endif %}
+##  After the j2 test on jiraProxyName var.
